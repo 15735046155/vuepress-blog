@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>快乐的小废物</title>
+    <meta name="generator" content="VuePress 1.9.5">
+    <link rel="icon" href="/vuepress-blog/logo.png">
+    <meta name="description" content="Welcome to my blog">
+    
+    <link rel="preload" href="/vuepress-blog/assets/css/0.styles.ea5dfd3f.css" as="style"><link rel="preload" href="/vuepress-blog/assets/js/app.cbcf97c7.js" as="script"><link rel="preload" href="/vuepress-blog/assets/js/2.777fc50c.js" as="script"><link rel="preload" href="/vuepress-blog/assets/js/10.0d919f74.js" as="script"><link rel="prefetch" href="/vuepress-blog/assets/js/11.86719511.js"><link rel="prefetch" href="/vuepress-blog/assets/js/3.81a2469f.js"><link rel="prefetch" href="/vuepress-blog/assets/js/4.257c5625.js"><link rel="prefetch" href="/vuepress-blog/assets/js/5.1a10c575.js"><link rel="prefetch" href="/vuepress-blog/assets/js/6.9218962a.js"><link rel="prefetch" href="/vuepress-blog/assets/js/7.d363d729.js"><link rel="prefetch" href="/vuepress-blog/assets/js/8.42f25137.js"><link rel="prefetch" href="/vuepress-blog/assets/js/9.9a580461.js">
+    <link rel="stylesheet" href="/vuepress-blog/assets/css/0.styles.ea5dfd3f.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/vuepress-blog/" class="home-link router-link-active"><img src="/vuepress-blog/logo.png" alt="快乐的小废物" class="logo"> <span class="site-name can-hide">快乐的小废物</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/vuepress-blog/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/vuepress-blog/js-gj/this.html" class="nav-link">
+  文档
+</a></div><div class="nav-item"><a href="/vuepress-blog/day/202204-01.html" class="nav-link">
+  日常
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/vuepress-blog/" class="nav-link">
+  首页
+</a></div><div class="nav-item"><a href="/vuepress-blog/js-gj/this.html" class="nav-link">
+  文档
+</a></div><div class="nav-item"><a href="/vuepress-blog/day/202204-01.html" class="nav-link">
+  日常
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>js-高级</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/vuepress-blog/js-gj/this.html" class="sidebar-link">this</a></li><li><a href="/vuepress-blog/js-gj/call-apply-bind.html" aria-current="page" class="active sidebar-link">手写call-apply-bind</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>记录日常</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><blockquote><p>本笔记真是针对实现思路，具体实现要处理很多临界情况，目前只大致实现</p></blockquote> <h1 id="call实现"><a href="#call实现" class="header-anchor">#</a> call实现</h1> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// 万一传递的参数本身就有fn方法，就会覆盖掉此函数中的fn，所以要使用symbol</span>
+<span class="token class-name">Function</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">hjjCall</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">thisArg<span class="token punctuation">,</span> <span class="token operator">...</span>arg</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 1.拿到调用hjjCall的函数，此处称为主函数</span>
+
+    <span class="token comment">// this为以下三行</span>
+    <span class="token comment">// ƒ foo() {</span>
+    <span class="token comment">//     console.log(this)</span>
+    <span class="token comment">// } </span>
+    <span class="token keyword">var</span> fn <span class="token operator">=</span> <span class="token keyword">this</span>
+
+    <span class="token comment">// 2.thisArg处理为对象类型（防止传入的为非对象类型）</span>
+    thisArg <span class="token operator">=</span> <span class="token punctuation">(</span>thisArg <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> thisArg <span class="token operator">!==</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token function">Object</span><span class="token punctuation">(</span>thisArg<span class="token punctuation">)</span> <span class="token operator">:</span> window <span class="token comment">// 1:处理绑定的this为null/undefined的情况，this为window  2:object(xxx)处理参数为对应的包装对象（Number {123, fn: ƒ}），否则123不能添加属性</span>
+
+    <span class="token comment">// 3.调用主函数</span>
+    thisArg<span class="token punctuation">.</span>fn <span class="token operator">=</span> fn <span class="token comment">// 2.改变this指向为第一个参数，借用对象调用隐式改变</span>
+    <span class="token keyword">var</span> result <span class="token operator">=</span> thisArg<span class="token punctuation">.</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token operator">...</span>arg<span class="token punctuation">)</span>
+
+    <span class="token comment">// 4.返回结果</span>
+    <span class="token keyword">return</span> result
+    
+    <span class="token comment">// 3、4步骤可以合并为</span>
+    <span class="token comment">// thisArg.fn = fn</span>
+    <span class="token comment">// return thisArg.fn(...arg)</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token parameter">num1<span class="token punctuation">,</span> num2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> num1<span class="token punctuation">,</span> num2<span class="token punctuation">)</span> <span class="token comment">// Number {123, fn: ƒ} 1 2</span>
+    <span class="token keyword">return</span> num1 <span class="token operator">+</span> num2
+<span class="token punctuation">}</span>
+
+<span class="token keyword">var</span> data <span class="token operator">=</span> foo<span class="token punctuation">.</span><span class="token function">hjjCall</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment">//3</span>
+</code></pre></div><h1 id="apply实现"><a href="#apply实现" class="header-anchor">#</a> apply实现</h1> <div class="language-js extra-class"><pre class="language-js"><code><span class="token class-name">Function</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">hjjApply</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">thisArg<span class="token punctuation">,</span> argArray</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> fn <span class="token operator">=</span> <span class="token keyword">this</span>
+
+    thisArg <span class="token operator">=</span> <span class="token punctuation">(</span>thisArg <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> thisArg <span class="token operator">!==</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token function">Object</span><span class="token punctuation">(</span>thisArg<span class="token punctuation">)</span> <span class="token operator">:</span> window
+    thisArg<span class="token punctuation">.</span>fn <span class="token operator">=</span> fn
+    
+    argArray <span class="token operator">=</span> argArray <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token comment">// 用来处理不传参数报错</span>
+    <span class="token keyword">return</span> thisArg<span class="token punctuation">.</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token operator">...</span>argArray<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token parameter">num1<span class="token punctuation">,</span> num2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> num1<span class="token punctuation">,</span> num2<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> num1 <span class="token operator">+</span> num2
+<span class="token punctuation">}</span>
+<span class="token comment">// 以下写法报错：Script snippet %237:219 Uncaught TypeError: Found non-callable @@iterator</span>
+<span class="token comment">// var data = foo.hjjApply(123, 1)</span>
+
+<span class="token comment">// 不传参数：Uncaught TypeError: argArray is not iterable (cannot read property undefined)</span>
+ <span class="token keyword">var</span> data <span class="token operator">=</span> foo<span class="token punctuation">.</span><span class="token function">hjjApply</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+</code></pre></div><h1 id="bind实现"><a href="#bind实现" class="header-anchor">#</a> bind实现</h1> <div class="language-js extra-class"><pre class="language-js"><code><span class="token class-name">Function</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">hjjBind</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">thisArg<span class="token punctuation">,</span> <span class="token operator">...</span>argArray</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> fn <span class="token operator">=</span> <span class="token keyword">this</span>
+    
+    thisArg <span class="token operator">=</span> <span class="token punctuation">(</span>thisArg <span class="token operator">!==</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> thisArg <span class="token operator">!==</span><span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token function">object</span><span class="token punctuation">(</span>thisArg<span class="token punctuation">)</span> <span class="token operator">:</span> window
+
+    <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token parameter"><span class="token operator">...</span>args</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        thisArg<span class="token punctuation">.</span>fn <span class="token operator">=</span> fn
+        thisArg<span class="token punctuation">.</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token operator">...</span>argArray<span class="token punctuation">,</span><span class="token operator">...</span>args<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token parameter">num1<span class="token punctuation">,</span> num2<span class="token punctuation">,</span> num3<span class="token punctuation">,</span> num4</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> num1<span class="token punctuation">,</span> num2<span class="token punctuation">,</span> num3<span class="token punctuation">,</span> num4<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 写法一</span>
+<span class="token keyword">var</span> res <span class="token operator">=</span> <span class="token function">foo</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token function">res</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token number">50</span><span class="token punctuation">)</span>
+<span class="token comment">// 写法二</span>
+<span class="token keyword">var</span> res <span class="token operator">=</span> <span class="token function">foo</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token number">50</span><span class="token punctuation">)</span>
+<span class="token function">res</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">// 写法三</span>
+<span class="token keyword">var</span> res <span class="token operator">=</span> <span class="token function">foo</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token string">'123'</span><span class="token punctuation">)</span>
+<span class="token function">res</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token number">50</span><span class="token punctuation">)</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/vuepress-blog/js-gj/this.html" class="prev">
+        this
+      </a></span> <span class="next"><a href="/vuepress-blog/day/202204-01.html">
+        202204
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/vuepress-blog/assets/js/app.cbcf97c7.js" defer></script><script src="/vuepress-blog/assets/js/2.777fc50c.js" defer></script><script src="/vuepress-blog/assets/js/10.0d919f74.js" defer></script>
+  </body>
+</html>
